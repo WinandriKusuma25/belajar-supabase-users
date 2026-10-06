@@ -1,14 +1,14 @@
 const SUPABASE_URL = "https://hpmcxbmpdoubpommxnko.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_nWgCEuMQZ4sQ8Jr8-08HxQ_3rvGtesh";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const tabelUser = document.getElementById("tabel-user");
 const statusEl = document.getElementById("status");
 const form = document.getElementById("form-tambah");
 
 async function muatUser() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("users")
     .select("nama, email, created_at")
     .order("created_at", { ascending: false });
@@ -45,7 +45,7 @@ form.addEventListener("submit", async (e) => {
 
   statusEl.textContent = "Menyimpan...";
 
-  const { error } = await supabase.from("users").insert({ nama, email, password });
+  const { error } = await supabaseClient.from("users").insert({ nama, email, password });
 
   if (error) {
     statusEl.textContent = `Gagal menyimpan: ${error.message}`;
